@@ -1,0 +1,3 @@
+quef_team_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: QuefTeamBundle:Default:index }

@@ -1,0 +1,11 @@
+parameters:
+  quef_team.provider.team_member.default.class: Quef\TeamBundle\Security\Provider\TeamMemberProvider
+
+services:
+#    quef_team.example:
+#        class: Quef\TeamBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+  quef_team.provider.team_member.default:
+      class: %quef_team.provider.team_member.default.class%
+      arguments: ["@security.token_storage"]
