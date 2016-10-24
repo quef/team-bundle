@@ -1,0 +1,5 @@
+services:
+  quef_team.form.invite:
+    abstract:  true
+    calls:
+      - [setRegistry, ['@quef_team.registry']]

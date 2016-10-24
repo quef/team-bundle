@@ -1,0 +1,12 @@
+services:
+  quef_team.doctrine_listener.team:
+    class: Quef\TeamBundle\EventListener\ORMTeamListener
+    arguments: ["@event_dispatcher"]
+    tags:
+      - { name: doctrine.event_listener, event: postPersist, connection: default }
+
+  quef_team.listener.team_admin:
+    class: Quef\TeamBundle\EventListener\TeamAdminListener
+    arguments: ["@doctrine.orm.entity_manager"]
+    tags:
+      - { name: kernel.event_subscriber }

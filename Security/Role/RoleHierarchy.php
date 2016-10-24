@@ -1,0 +1,70 @@
+<?php
+
+namespace Quef\TeamBundle\Security\Role;
+
+/**
+ * RoleHierarchy defines a role hierarchy.
+ */
+class RoleHierarchy implements RoleHierarchyInterface
+{
+    private $hierarchy;
+    protected $map;
+
+    /**
+     * Constructor.
+     *
+     * @param array $hierarchy An array defining the hierarchy
+     */
+    public function __construct(array $hierarchy)
+    {
+        $this->hierarchy = $hierarchy;
+
+        $this->buildRoleMap();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReachableRoles(array $roles)
+    {
+        $reachableRoles = $roles;
+        foreach ($roles as $role) {
+            if (!isset($this->map[$role->getRole()])) {
+                continue;
+            }
+
+            foreach ($this->map[$role->getRole()] as $r) {
+                $reachableRoles[] = new Role($r);
+            }
+        }
+
+        return $reachableRoles;
+    }
+
+    protected function buildRoleMap()
+    {
+        $this->map = array();
+        foreach ($this->hierarchy as $main => $roles) {
+            $this->map[$main] = $roles;
+            $visited = array();
+            $additionalRoles = $roles;
+            while ($role = array_shift($additionalRoles)) {
+                if (!isset($this->hierarchy[$role])) {
+                    continue;
+                }
+
+                $visited[] = $role;
+
+                foreach ($this->hierarchy[$role] as $roleToAdd) {
+                    $this->map[$main][] = $roleToAdd;
+                }
+
+                foreach (array_diff($this->hierarchy[$role], $visited) as $additionalRole) {
+                    $additionalRoles[] = $additionalRole;
+                }
+            }
+
+            $this->map[$main] = array_unique($this->map[$main]);
+        }
+    }
+}

@@ -16,4 +16,7 @@ interface TeamInterface
 
     /** @return TeamMemberInterface */
     public function getTeamAdmin();
+
+    /** @param TeamMemberInterface $admin */
+    public function setTeamAdmin(TeamMemberInterface $admin);
 }

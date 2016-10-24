@@ -20,9 +20,56 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('quef_team');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+
+        $rootNode->children()
+
+            ->arrayNode('teams')
+                ->useAttributeAsKey('alias')
+                ->prototype('array')
+                    ->children()
+                        ->arrayNode('team')
+                            ->children()
+                                ->scalarNode('model')
+                                    ->isRequired()
+                                    ->end()
+                                ->scalarNode('provider')
+                                    ->defaultValue('quef_team.provider.team.default')
+                                    ->end()
+                                ->end()
+                            ->end()
+
+                        ->arrayNode('member')
+                            ->children()
+                                ->scalarNode('model')
+                                    ->isRequired()
+                                    ->end()
+                                ->end()
+                            ->end()
+
+
+                        ->arrayNode('invite')
+                            ->children()
+                                ->scalarNode('model')
+                                    ->isRequired()
+                                    ->end()
+                                ->end()
+                            ->end()
+
+                        ->arrayNode('roles')
+                            ->prototype('scalar')->end()
+                            ->end()
+                        ->arrayNode('role_hierarchy')
+                            ->useAttributeAsKey('id')
+                            ->prototype('array')
+                                ->prototype('scalar')->end()
+                                ->end()
+                            ->end()
+                        ->end()
+
+                    ->end()
+                ->end()
+
+            ->end();
 
         return $treeBuilder;
     }

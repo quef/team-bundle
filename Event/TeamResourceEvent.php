@@ -17,7 +17,7 @@ class TeamResourceEvent extends GenericEvent
     /** @var TeamResourceInterface */
     private $resource;
 
-    public function __construct($subject, array $arguments)
+    public function __construct($subject, array $arguments = array())
     {
         parent::__construct($subject, $arguments);
         if(!$subject instanceof TeamResourceInterface) {
@@ -26,6 +26,7 @@ class TeamResourceEvent extends GenericEvent
         $this->resource = $subject;
     }
 
+    /** @return TeamResourceInterface */
     public function getResource()
     {
         return $this->resource;

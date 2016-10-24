@@ -1,0 +1,18 @@
+Quef\TeamBundle\Model\Invite:
+  type: mappedSuperclass
+
+  fields:
+    code:
+      type: string
+      length: 255
+      unique: true
+    email:
+      type: string
+      length: 255
+    invitedAt:
+      type: datetime
+      column: invited_at
+    used:
+      type: boolean
+    roles:
+      type: array
