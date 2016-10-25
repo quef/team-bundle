@@ -14,8 +14,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class TeamResourceEvent extends GenericEvent
 {
-    /** @var TeamResourceInterface */
-    private $resource;
 
     public function __construct($subject, array $arguments = array())
     {
@@ -23,13 +21,12 @@ class TeamResourceEvent extends GenericEvent
         if(!$subject instanceof TeamResourceInterface) {
             throw new \InvalidArgumentException('This is not a valid TeamResourceInterface');
         }
-        $this->resource = $subject;
     }
 
     /** @return TeamResourceInterface */
     public function getResource()
     {
-        return $this->resource;
+        return $this->getSubject();
     }
 
 }

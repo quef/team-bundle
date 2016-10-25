@@ -14,8 +14,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class TeamMemberEvent extends GenericEvent
 {
-    /** @var TeamMemberInterface */
-    private $member;
 
     public function __construct($subject, array $arguments = array())
     {
@@ -23,13 +21,12 @@ class TeamMemberEvent extends GenericEvent
         if(!$subject instanceof TeamMemberInterface) {
             throw new \InvalidArgumentException('This is not a valid TeamMemberInterface');
         }
-        $this->member = $subject;
     }
 
     /** @return TeamMemberInterface */
     public function getMember()
     {
-        return $this->member;
+        return $this->getSubject();
     }
 
 }

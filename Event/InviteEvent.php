@@ -9,22 +9,22 @@
 namespace Quef\TeamBundle\Event;
 
 
-use Quef\TeamBundle\Model\TeamInterface;
+use Quef\TeamBundle\Model\InviteInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class TeamEvent extends GenericEvent
+class InviteEvent extends GenericEvent
 {
 
     public function __construct($subject, array $arguments = array())
     {
         parent::__construct($subject, $arguments);
-        if(!$subject instanceof TeamInterface) {
-            throw new \InvalidArgumentException('This is not a valid TeamInterface');
+        if(!$subject instanceof InviteInterface) {
+            throw new \InvalidArgumentException('This is not a valid InviteInterface');
         }
     }
 
-    /** @return TeamInterface */
-    public function getTeam()
+    /** @return InviteInterface */
+    public function getInvite()
     {
         return $this->getSubject();
     }

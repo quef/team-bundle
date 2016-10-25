@@ -14,5 +14,7 @@ Quef\TeamBundle\Model\Invite:
       column: invited_at
     used:
       type: boolean
+    sent:
+      type: boolean
     roles:
       type: array

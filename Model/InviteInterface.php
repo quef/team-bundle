@@ -49,4 +49,10 @@ interface InviteInterface extends TeamResourceInterface
     /** @return bool */
     public function isUsed();
 
+    /** @param bool $sent */
+    public function setSent($sent);
+
+    /** @return bool */
+    public function isSent();
+
 }

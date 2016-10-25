@@ -37,10 +37,14 @@ abstract class Invite implements InviteInterface, ResourceInterface
     protected $invitedAt;
 
     /** @var bool */
+    protected $sent;
+
+    /** @var bool */
     protected $used;
 
     public function __construct()
     {
+        $this->sent = false;
         $this->used = false;
     }
 
@@ -114,6 +118,22 @@ abstract class Invite implements InviteInterface, ResourceInterface
     public function setInvitedAt($invitedAt)
     {
         $this->invitedAt = $invitedAt;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSent()
+    {
+        return $this->sent;
+    }
+
+    /**
+     * @param boolean $sent
+     */
+    public function setSent($sent)
+    {
+        $this->sent = $sent;
     }
 
     /**

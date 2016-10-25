@@ -10,10 +10,12 @@ namespace Quef\TeamBundle\EventListener;
 
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Quef\TeamBundle\Event\InviteEvent;
 use Quef\TeamBundle\Event\TeamEvent;
 use Quef\TeamBundle\Event\TeamEvents;
 use Quef\TeamBundle\Event\TeamMemberEvent;
 use Quef\TeamBundle\Event\TeamResourceEvent;
+use Quef\TeamBundle\Model\InviteInterface;
 use Quef\TeamBundle\Model\TeamInterface;
 use Quef\TeamBundle\Model\TeamMemberInterface;
 use Quef\TeamBundle\Model\TeamResourceInterface;
@@ -40,6 +42,9 @@ class ORMTeamListener
         }
         if($entity instanceof TeamInterface) {
             $this->eventDispatcher->dispatch(TeamEvents::TEAM_CREATED, new TeamEvent($entity));
+        }
+        if($entity instanceof InviteInterface) {
+            $this->eventDispatcher->dispatch(TeamEvents::INVITE_CREATED, new InviteEvent($entity));
         }
     }
 }
