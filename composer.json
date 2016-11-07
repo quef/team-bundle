@@ -1,0 +1,30 @@
+{
+  "name" : "quef/team-bundle",
+  "description" : "QuefTeamBundle",
+  "type" : "symfony-bundle",
+  "authors" : [{
+    "name" : "Valentin Quefelec",
+    "email" : "valentin@quefelec.com"
+  }],
+  "keywords" : [
+    "Team management"
+  ],
+  "license" : [
+    "MIT"
+  ],
+  "require" : {
+  },
+  "autoload" : {
+    "psr-0" : {
+      "Quef\\TeamBundle" : ""
+    }
+  },
+  "target-dir" : "Quef/TeamBundle",
+  "repositories" : [{
+  }],
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "0.1.0"
+    }
+  }
+}
