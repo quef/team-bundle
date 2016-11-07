@@ -68,6 +68,11 @@ class Metadata implements MetadataInterface
         return $this->parameters['role_hierarchy'];
     }
 
+    public function getAdminRole()
+    {
+        return $this->parameters['admin_role'];
+    }
+
     /**
      * {@inheritdoc}
      */

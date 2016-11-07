@@ -9,6 +9,8 @@
 namespace Quef\TeamBundle\Metadata;
 
 
+use Quef\TeamBundle\Model\TeamInterface;
+
 interface RegistryInterface
 {
 
@@ -25,10 +27,10 @@ interface RegistryInterface
     public function get($alias);
 
     /**
-     * @param string $className
+     * @param TeamInterface $className
      * @return MetadataInterface
      */
-    public function getByClass($className);
+    public function getByObject(TeamInterface $className);
 
 
     public function add(MetadataInterface $metadata);

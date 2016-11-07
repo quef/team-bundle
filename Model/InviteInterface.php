@@ -35,10 +35,10 @@ interface InviteInterface extends TeamResourceInterface
     public function setInvitedBy(TeamMemberInterface $invitedBy);
 
     /** @return mixed */
-    public function getRoles();
+    public function getRole();
 
-    /** @param mixed $roles */
-    public function setRoles($roles);
+    /** @param mixed $role */
+    public function setRole($role);
 
     /** @param TeamInterface */
     public function setTeam(TeamInterface $team);

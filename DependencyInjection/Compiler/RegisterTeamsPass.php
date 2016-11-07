@@ -54,7 +54,7 @@ class RegisterTeamsPass implements CompilerPassInterface
     private function addRoleProvider(ContainerBuilder $container, MetadataInterface $metadata)
     {
         $definition = new Definition(RoleProvider::class);
-        $definition->setArguments([$metadata->getRoles()]);
+        $definition->setArguments([$metadata->getRoles(), $metadata->getAdminRole()]);
         $container->setDefinition($metadata->getServiceId('provider.role'), $definition);
     }
 

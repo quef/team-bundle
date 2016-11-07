@@ -9,6 +9,8 @@
 namespace Quef\TeamBundle\Metadata;
 
 
+use Quef\TeamBundle\Model\TeamInterface;
+
 class Registry implements RegistryInterface
 {
     /** @var MetadataInterface[] */
@@ -37,8 +39,9 @@ class Registry implements RegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getByClass($className)
+    public function getByObject(TeamInterface $object)
     {
+        $className = get_class($object);
         foreach ($this->metadata as $metadata) {
             if ($className === $metadata->getTeam()) {
                 return $metadata;

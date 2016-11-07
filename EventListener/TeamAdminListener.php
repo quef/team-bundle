@@ -12,6 +12,7 @@ namespace Quef\TeamBundle\EventListener;
 use Doctrine\Common\Persistence\ObjectManager;
 use Quef\TeamBundle\Event\TeamEvents;
 use Quef\TeamBundle\Event\TeamMemberEvent;
+use Quef\TeamBundle\Metadata\RegistryInterface;
 use Quef\TeamBundle\Model\TeamInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -20,8 +21,12 @@ class TeamAdminListener implements EventSubscriberInterface
     /** @var ObjectManager */
     private $om;
 
-    public function __construct(ObjectManager $objectManager)
+    /** @var RegistryInterface */
+    private $registry;
+
+    public function __construct(RegistryInterface $registry, ObjectManager $objectManager)
     {
+        $this->registry = $registry;
         $this->om = $objectManager;
     }
 
@@ -43,6 +48,10 @@ class TeamAdminListener implements EventSubscriberInterface
         // Set first member as admin
         if(null === $team->getTeamAdmin()) {
             $team->setTeamAdmin($event->getMember());
+
+            $adminRole = $this->registry->getByObject($team)->getAdminRole();
+            $event->getMember()->setTeamRole($adminRole);
+            $this->om->persist($event->getMember());
             $this->om->persist($team);
             $this->om->flush();
         }

@@ -16,5 +16,5 @@ Quef\TeamBundle\Model\Invite:
       type: boolean
     sent:
       type: boolean
-    roles:
-      type: array
+    role:
+      type: string

@@ -32,7 +32,7 @@ class TeamMemberFactory implements TeamMemberFactoryInterface
         /** @var TeamMemberInterface $member */
         $member = new $this->className;
         $member->setTeam($invite->getTeam());
-        $member->setTeamRoles($invite->getRoles());
+        $member->setTeamRole($invite->getRole());
         if(method_exists($member, 'setEmail')) {
             $member->setEmail($invite->getEmail());
         }

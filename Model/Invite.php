@@ -19,9 +19,9 @@ abstract class Invite implements InviteInterface, ResourceInterface
     protected $id;
 
     /**
-     * @var array
+     * @var mixed
      */
-    protected $roles;
+    protected $role;
 
     /**
      * @var string
@@ -54,22 +54,6 @@ abstract class Invite implements InviteInterface, ResourceInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-    /**
-     * @param array $roles
-     */
-    public function setRoles($roles)
-    {
-        $this->roles = $roles;
     }
 
     /**
@@ -152,13 +136,20 @@ abstract class Invite implements InviteInterface, ResourceInterface
         $this->used = $used;
     }
 
-    public function setRole($role)
-    {
-        $this->setRoles(array($role));
-    }
-
+    /**
+     * @return mixed
+     */
     public function getRole()
     {
-        return isset($this->roles[0])? $this->roles[0]: null;
+        return $this->role;
     }
+
+    /**
+     * @param mixed $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
+
 }

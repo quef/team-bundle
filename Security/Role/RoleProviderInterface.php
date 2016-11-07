@@ -13,4 +13,7 @@ interface RoleProviderInterface
 {
     /** @return array */
     public function getRoles();
+
+    /** @return string */
+    public function getAdminRole();
 }

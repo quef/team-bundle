@@ -11,11 +11,11 @@ namespace Quef\TeamBundle\Model;
 
 interface TeamMemberInterface extends TeamResourceInterface
 {
-    /** @return array */
-    public function getTeamRoles();
+    /** @return string */
+    public function getTeamRole();
 
-    /** @param array $roles */
-    public function setTeamRoles($roles);
+    /** @param string $role */
+    public function setTeamRole($role);
 
     /** @param TeamInterface $team */
     public function setTeam(TeamInterface $team);

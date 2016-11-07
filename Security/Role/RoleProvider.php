@@ -13,8 +13,11 @@ class RoleProvider implements RoleProviderInterface
 {
     protected $roles;
 
-    public function __construct($roles)
+    protected $admin;
+
+    public function __construct($roles, $admin)
     {
+        $this->admin = $admin;
         $this->roles = $roles;
     }
 
@@ -22,5 +25,16 @@ class RoleProvider implements RoleProviderInterface
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    public function getRolesWithAdmin()
+    {
+        return array_merge($this->getRoles(), $this->admin);
+    }
+
+    /** @return string */
+    public function getAdminRole()
+    {
+        return $this->admin;
     }
 }

@@ -52,6 +52,11 @@ interface MetadataInterface
     public function getRoleHierarchy();
 
     /**
+     * @return string
+     */
+    public function getAdminRole();
+
+    /**
      * @param string $serviceName
      *
      * @return string

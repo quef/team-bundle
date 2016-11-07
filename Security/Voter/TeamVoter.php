@@ -34,6 +34,7 @@ abstract class TeamVoter extends Voter implements TeamVoterInterface
         return $this->voteOnResource($attribute, $subject, $token);
     }
 
+
     /**
      * @param $attribute
      * @param $subject
