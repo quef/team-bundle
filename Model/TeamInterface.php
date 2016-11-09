@@ -13,10 +13,4 @@ interface TeamInterface
 {
     /** @return mixed */
     public function getId();
-
-    /** @return TeamMemberInterface */
-    public function getTeamAdmin();
-
-    /** @param TeamMemberInterface $admin */
-    public function setTeamAdmin(TeamMemberInterface $admin);
 }

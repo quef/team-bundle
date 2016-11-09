@@ -13,6 +13,8 @@ use Quef\TeamBundle\Factory\InviteFactory;
 use Quef\TeamBundle\Factory\TeamMemberFactory;
 use Quef\TeamBundle\Metadata\Metadata;
 use Quef\TeamBundle\Metadata\MetadataInterface;
+use Quef\TeamBundle\Security\Role\RoleChecker;
+use Quef\TeamBundle\Security\Role\RoleHierarchy;
 use Quef\TeamBundle\Security\Role\RoleProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,6 +39,7 @@ class RegisterTeamsPass implements CompilerPassInterface
             $metadata = new Metadata($alias, $configuration);
             $registry->addMethodCall('add', [$this->getMetadataDefinition($metadata)]);
             $this->addRoleProvider($container, $metadata);
+            $this->addRoleChecker($container, $metadata);
             $this->addTeamProvider($container, $metadata);
             $this->addTeamMemberFactory($container, $metadata);
             $this->addInviteFactory($container, $metadata);
@@ -51,11 +54,27 @@ class RegisterTeamsPass implements CompilerPassInterface
         return $definition;
     }
 
+    protected function getRoleHierarchyDefinition(MetadataInterface $metadata)
+    {
+        $definition = new Definition(RoleHierarchy::class);
+        $definition->setArguments([$metadata->getRoleHierarchy()]);
+        return $definition;
+    }
+
     private function addRoleProvider(ContainerBuilder $container, MetadataInterface $metadata)
     {
         $definition = new Definition(RoleProvider::class);
         $definition->setArguments([$metadata->getRoles(), $metadata->getAdminRole()]);
         $container->setDefinition($metadata->getServiceId('provider.role'), $definition);
+    }
+
+    private function addRoleChecker(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $definition = new Definition(RoleChecker::class);
+        $definition->setArguments([
+            $this->getRoleHierarchyDefinition($metadata),
+            $metadata->getAdminRole()]);
+        $container->setDefinition($metadata->getServiceId('checker.role'), $definition);
     }
 
     private function addTeamProvider(ContainerBuilder $container, MetadataInterface $metadata)
