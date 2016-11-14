@@ -28,7 +28,6 @@ class InviteFactory implements InviteFactoryInterface
     /** @return InviteInterface */
     public function createNew()
     {
-        dump($this->class);
         /** @var InviteInterface $invite */
         $invite = new $this->class();
         $invite->setInvitedAt(new \DateTime());
