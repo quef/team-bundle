@@ -1,9 +1,0 @@
-Quef\TeamBundle\Model\TeamInterface:
-  properties:
-    name:
-      - NotNull:
-        message:  team.name.null
-        groups: [Default]
-      - NotBlank:
-        message:  team.name.blank
-        groups: [Default]
