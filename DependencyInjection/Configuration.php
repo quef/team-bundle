@@ -48,9 +48,14 @@ class Configuration implements ConfigurationInterface
         $node = new ArrayNodeDefinition('team');
 
         $node
+            ->beforeNormalization()
+                ->ifString()
+                ->then(function ($v) { return array('model' => $v); })
+            ->end()
             ->children()
                 ->scalarNode('model')
                     ->isRequired()
+                    ->cannotBeEmpty()
                 ->end()
                 ->scalarNode('provider')
                     ->defaultValue('quef_team.provider.team.default')
