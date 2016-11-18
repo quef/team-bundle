@@ -26,5 +26,9 @@
     "branch-alias" : {
       "dev-master" : "0.1.1"
     }
+  },
+  "require-dev": {
+    "matthiasnoback/symfony-config-test": "^2.0",
+    "phpunit/phpunit": "^5.6"
   }
 }
