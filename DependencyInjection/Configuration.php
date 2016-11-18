@@ -2,6 +2,7 @@
 
 namespace Quef\TeamBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -20,60 +21,97 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('quef_team');
 
-
         $rootNode->children()
-
             ->arrayNode('teams')
                 ->useAttributeAsKey('alias')
                 ->prototype('array')
                     ->children()
-                        ->arrayNode('team')
-                            ->children()
-                                ->scalarNode('model')
-                                    ->isRequired()
-                                    ->end()
-                                ->scalarNode('provider')
-                                    ->defaultValue('quef_team.provider.team.default')
-                                    ->end()
-                                ->end()
-                            ->end()
-
-                        ->arrayNode('member')
-                            ->children()
-                                ->scalarNode('model')
-                                    ->isRequired()
-                                    ->end()
-                                ->end()
-                            ->end()
-
-
-                        ->arrayNode('invite')
-                            ->children()
-                                ->scalarNode('model')
-                                    ->isRequired()
-                                    ->end()
-                                ->end()
-                            ->end()
-
-                        ->arrayNode('roles')
-                            ->prototype('scalar')->end()
-                            ->end()
-                        ->arrayNode('role_hierarchy')
-                            ->useAttributeAsKey('id')
-                            ->prototype('array')
-                                ->prototype('scalar')->end()
-                                ->end()
-                            ->end()
+                        ->append($this->addTeamNode())
+                        ->append($this->addMemberNode())
+                        ->append($this->addInviteNode())
+                        ->append($this->addRolesNode())
+                        ->append($this->addRoleHierarchyNode())
                         ->scalarNode('admin_role')
                             ->isRequired()
-                            ->end()
                         ->end()
-
                     ->end()
                 ->end()
-
-            ->end();
+            ->end()
+        ->end();
 
         return $treeBuilder;
+    }
+
+    public function addTeamNode()
+    {
+        $node = new ArrayNodeDefinition('team');
+
+        $node
+            ->children()
+                ->scalarNode('model')
+                    ->isRequired()
+                ->end()
+                ->scalarNode('provider')
+                    ->defaultValue('quef_team.provider.team.default')
+                ->end()
+            ->end()
+        ->end();
+
+        return $node;
+    }
+
+    public function addMemberNode()
+    {
+        $node = new ArrayNodeDefinition('member');
+
+        $node
+            ->children()
+                ->scalarNode('model')
+                    ->isRequired()
+                ->end()
+            ->end()
+        ->end();
+
+        return $node;
+    }
+
+    public function addInviteNode()
+    {
+        $node = new ArrayNodeDefinition('invite');
+
+        $node
+            ->children()
+                ->scalarNode('model')
+                    ->isRequired()
+                ->end()
+            ->end()
+        ->end();
+
+        return $node;
+    }
+
+    public function addRolesNode()
+    {
+        $node = new ArrayNodeDefinition('roles');
+
+        $node
+            ->prototype('scalar')
+        ->end();
+
+        return $node;
+    }
+
+    public function addRoleHierarchyNode()
+    {
+        $node = new ArrayNodeDefinition('role_hierarchy');
+
+        $node
+            ->useAttributeAsKey('id')
+            ->prototype('array')
+                ->prototype('scalar')->end()
+            ->end()
+        ->end();
+
+        return $node;
     }
 }
