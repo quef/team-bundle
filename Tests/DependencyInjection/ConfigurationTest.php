@@ -129,4 +129,22 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             "teams.*.team.model"
         );
     }
+
+    public function testMemberNodeModelCannotBeEmpty()
+    {
+        $this->assertPartialConfigurationIsInvalid(
+            [
+                [
+                    'teams' => [
+                        'array' => [
+                            'member' => [
+                                'model' => ''
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            "teams.*.member.model"
+        );
+    }
 }
