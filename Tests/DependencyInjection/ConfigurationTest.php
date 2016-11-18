@@ -13,7 +13,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         return new Configuration();
     }
-    
+
+
+
     public function testAdminRoleCannotBeEmpty()
     {
         $this->assertPartialConfigurationIsInvalid(
@@ -41,6 +43,90 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             "teams.*.admin_role"
+        );
+    }
+
+    public function testTeamNodeModelIsNormalized()
+    {
+        $this->assertProcessedConfigurationEquals(
+            [
+                [
+                    'teams' => [
+                        'array' => [
+                            'team' => 'TestClass'
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'teams' => [
+                    'array' => [
+                        'team' => [
+                            'model' => 'TestClass'
+                        ]
+                    ]
+                ]
+            ],
+            "teams.*.team.model"
+        );
+    }
+
+    public function testTeamNodeProviderIsSetToDefaultIfNotDefined()
+    {
+        $this->assertProcessedConfigurationEquals(
+            [
+                [
+                    'teams' => [
+                        'array' => [
+                            'team' => []
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'teams' => [
+                    'array' => [
+                        'team' => [
+                            'provider' => 'quef_team.provider.team.default'
+                        ]
+                    ]
+                ]
+            ],
+            "teams.*.team.provider"
+        );
+    }
+
+    public function testTeamNodeModelCannotBeEmpty()
+    {
+        $this->assertPartialConfigurationIsInvalid(
+            [
+                [
+                    'teams' => [
+                        'array' => [
+                            'team' => [
+                                'model' => ''
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            "teams.*.team.model"
+        );
+    }
+
+    public function testTeamNodeModelIsRequired()
+    {
+        $this->assertPartialConfigurationIsInvalid(
+            [
+                [
+                    'teams' => [
+                        'array' => [
+                            'team' => []
+                        ]
+                    ]
+                ]
+            ],
+            "teams.*.team.model"
         );
     }
 }
