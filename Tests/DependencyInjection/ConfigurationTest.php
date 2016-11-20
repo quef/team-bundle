@@ -197,4 +197,20 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             "teams.*.invite.model"
         );
     }
+
+    public function testAtLeastOneRoleIsRequired()
+    {
+        $this->assertPartialConfigurationIsInvalid(
+            [
+                [
+                    'teams' => [
+                        'array' => [
+                            'roles' => []
+                        ]
+                    ]
+                ]
+            ],
+            "teams.*.roles"
+        );
+    }
 }

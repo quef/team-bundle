@@ -103,6 +103,7 @@ class Configuration implements ConfigurationInterface
         $node = new ArrayNodeDefinition('roles');
 
         $node
+            ->requiresAtLeastOneElement()
             ->prototype('scalar')
         ->end();
 
