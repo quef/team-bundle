@@ -35,6 +35,7 @@ class Configuration implements ConfigurationInterface
                             ->isRequired()
                             ->cannotBeEmpty()
                         ->end()
+                        ->append($this->addPermissionsNode())
                     ->end()
                 ->end()
             ->end()
@@ -127,6 +128,17 @@ class Configuration implements ConfigurationInterface
             ->prototype('array')
                 ->prototype('scalar')->end()
             ->end()
+        ->end();
+
+        return $node;
+    }
+
+    public function addPermissionsNode()
+    {
+        $node = new ArrayNodeDefinition('permissions');
+
+        $node
+            ->prototype('scalar')->end()
         ->end();
 
         return $node;

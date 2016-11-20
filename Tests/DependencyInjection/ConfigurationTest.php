@@ -213,4 +213,39 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             "teams.*.roles"
         );
     }
+
+    public function testScalarPermissionsCanBeDefined()
+    {
+        $this->assertConfigurationIsValid(
+            [
+                [
+                    'teams' => [
+                        'team1' => [
+                            'permissions' => [
+                                'permission1',
+                                'permission2'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'teams.*.permissions'
+        );
+    }
+
+    public function testPermissionsCanBeEmpty()
+    {
+        $this->assertConfigurationIsValid(
+            [
+                [
+                    'teams' => [
+                        'team1' => [
+                            'permissions' => []
+                        ]
+                    ]
+                ]
+            ],
+            'teams.*.permissions'
+        );
+    }
 }
