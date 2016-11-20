@@ -181,4 +181,20 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             "teams.*.invite.model"
         );
     }
+
+    public function testInviteNodeModelIsRequired()
+    {
+        $this->assertPartialConfigurationIsInvalid(
+            [
+                [
+                    'teams' => [
+                        'array' => [
+                            'invite' => []
+                        ]
+                    ]
+                ]
+            ],
+            "teams.*.invite.model"
+        );
+    }
 }
