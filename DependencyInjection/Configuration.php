@@ -90,6 +90,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('model')
                     ->isRequired()
+                    ->cannotBeEmpty()
                 ->end()
             ->end()
         ->end();

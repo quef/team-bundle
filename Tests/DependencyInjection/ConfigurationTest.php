@@ -163,4 +163,22 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             "teams.*.member.model"
         );
     }
+
+    public function testInviteNodeModelCannotBeEmpty()
+    {
+        $this->assertPartialConfigurationIsInvalid(
+            [
+                [
+                    'teams' => [
+                        'array' => [
+                            'invite' => [
+                                'model' => ''
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            "teams.*.invite.model"
+        );
+    }
 }
