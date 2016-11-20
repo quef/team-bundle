@@ -147,4 +147,20 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             "teams.*.member.model"
         );
     }
+
+    public function testMemberNodeModelIsRequired()
+    {
+        $this->assertPartialConfigurationIsInvalid(
+            [
+                [
+                    'teams' => [
+                        'array' => [
+                            'member' => []
+                        ]
+                    ]
+                ]
+            ],
+            "teams.*.member.model"
+        );
+    }
 }
