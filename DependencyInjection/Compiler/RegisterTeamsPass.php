@@ -13,6 +13,7 @@ use Quef\TeamBundle\Factory\InviteFactory;
 use Quef\TeamBundle\Factory\TeamMemberFactory;
 use Quef\TeamBundle\Metadata\Metadata;
 use Quef\TeamBundle\Metadata\MetadataInterface;
+use Quef\TeamBundle\Security\Permission\PermissionProvider;
 use Quef\TeamBundle\Security\Role\RoleChecker;
 use Quef\TeamBundle\Security\Role\RoleHierarchy;
 use Quef\TeamBundle\Security\Role\RoleProvider;
@@ -43,6 +44,7 @@ class RegisterTeamsPass implements CompilerPassInterface
             $this->addTeamProvider($container, $metadata);
             $this->addTeamMemberFactory($container, $metadata);
             $this->addInviteFactory($container, $metadata);
+            $this->addPermissionProvider($container, $metadata);
         }
     }
 
@@ -94,5 +96,11 @@ class RegisterTeamsPass implements CompilerPassInterface
         $definition = new Definition(TeamMemberFactory::class);
         $definition->addMethodCall('setClassName', [$metadata->getMember()]);
         $container->setDefinition($metadata->getServiceId('factory.member'), $definition);
+    }
+
+    private function addPermissionProvider(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $definition = new Definition(PermissionProvider::class, [$metadata->getRolesConfiguration()]);
+        $container->setDefinition($metadata->getServiceId('provider.permission'), $definition);
     }
 }

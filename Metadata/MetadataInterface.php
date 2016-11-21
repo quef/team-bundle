@@ -62,4 +62,6 @@ interface MetadataInterface
      * @return string
      */
     public function getServiceId($serviceName);
+
+    public function getRolesConfiguration();
 }

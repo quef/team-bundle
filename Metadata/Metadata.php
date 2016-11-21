@@ -60,6 +60,11 @@ class Metadata implements MetadataInterface
 
     public function getRoles()
     {
+        return array_keys($this->parameters['roles']);
+    }
+
+    public function getRolesConfiguration()
+    {
         return $this->parameters['roles'];
     }
 
