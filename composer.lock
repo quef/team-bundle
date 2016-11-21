@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aeeba153467da69a70d2b43b3d2bfc27",
-    "content-hash": "5d2b8126ddc482d3ec718b64b9e8bcf1",
+    "hash": "cbffe412355fdc7d326fefbb75177140",
+    "content-hash": "8f7d7695deba6286d2af521dd267c5ee",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2231,6 +2231,56 @@
                 "symfony"
             ],
             "time": "2016-10-19 10:12:12"
+        },
+        {
+            "name": "matthiasnoback/symfony-dependency-injection-test",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthiasnoback/SymfonyDependencyInjectionTest.git",
+                "reference": "62267da3322b208404194a41d8ad0b89261b474f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthiasnoback/SymfonyDependencyInjectionTest/zipball/62267da3322b208404194a41d8ad0b89261b474f",
+                "reference": "62267da3322b208404194a41d8ad0b89261b474f",
+                "shasum": ""
+            },
+            "require": {
+                "matthiasnoback/symfony-config-test": "^1.0|^2.0",
+                "sebastian/exporter": "^1.0",
+                "symfony/config": "^2.3|^3.0",
+                "symfony/dependency-injection": "^2.3|^3.0",
+                "symfony/yaml": "^2.7|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0|^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Matthias\\SymfonyDependencyInjectionTest\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthias Noback",
+                    "email": "matthiasnoback@gmail.com",
+                    "homepage": "http://php-and-symfony.matthiasnoback.nl"
+                }
+            ],
+            "description": "Library for testing user classes related to the Symfony Dependency Injection Component",
+            "homepage": "http://github.com/matthiasnoback/SymfonyDependencyInjectionTest",
+            "keywords": [
+                "Symfony2",
+                "dependency injection",
+                "phpunit"
+            ],
+            "time": "2016-10-19 07:55:54"
         },
         {
             "name": "myclabs/deep-copy",
