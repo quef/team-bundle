@@ -13,6 +13,7 @@ use Quef\TeamBundle\Factory\InviteFactory;
 use Quef\TeamBundle\Factory\TeamMemberFactory;
 use Quef\TeamBundle\Metadata\Metadata;
 use Quef\TeamBundle\Metadata\MetadataInterface;
+use Quef\TeamBundle\Security\Permission\PermissionChecker;
 use Quef\TeamBundle\Security\Permission\PermissionProvider;
 use Quef\TeamBundle\Security\Role\RoleChecker;
 use Quef\TeamBundle\Security\Role\RoleHierarchy;
@@ -45,6 +46,7 @@ class RegisterTeamsPass implements CompilerPassInterface
             $this->addTeamMemberFactory($container, $metadata);
             $this->addInviteFactory($container, $metadata);
             $this->addPermissionProvider($container, $metadata);
+            $this->addPermissionChecker($container, $metadata);
         }
     }
 
@@ -102,5 +104,13 @@ class RegisterTeamsPass implements CompilerPassInterface
     {
         $definition = new Definition(PermissionProvider::class, [$metadata->getRolesConfiguration()]);
         $container->setDefinition($metadata->getServiceId('provider.permission'), $definition);
+    }
+
+    private function addPermissionChecker(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $definition = new Definition(PermissionChecker::class, [
+            new Reference($metadata->getServiceId('provider.permission'))
+        ] );
+        $container->setDefinition($metadata->getServiceId('checker.permission'), $definition);
     }
 }

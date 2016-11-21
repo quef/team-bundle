@@ -12,8 +12,10 @@ namespace Quef\TeamBundle\Tests\DependencyInjection\Compiler;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Quef\TeamBundle\DependencyInjection\Compiler\RegisterTeamsPass;
 use Quef\TeamBundle\DependencyInjection\QuefTeamExtension;
+use Quef\TeamBundle\Security\Permission\PermissionChecker;
 use Quef\TeamBundle\Security\Permission\PermissionProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterTeamsPassTest extends AbstractCompilerPassTestCase
 {
@@ -22,8 +24,10 @@ class RegisterTeamsPassTest extends AbstractCompilerPassTestCase
         $this->container->addCompilerPass(new RegisterTeamsPass());
     }
 
-    public function testOnePermissionProviderIsRegisteredForEachTeam()
+    public function setUp()
     {
+        parent::setUp();
+
         $configs = [
             [
                 'teams' => [
@@ -56,6 +60,10 @@ class RegisterTeamsPassTest extends AbstractCompilerPassTestCase
         $extension = new QuefTeamExtension();
         $extension->load($configs, $this->container);
 
+    }
+
+    public function testOnePermissionProviderIsRegisteredForEachTeam()
+    {
         $this->container->compile();
 
         $roleConfigurationForTeam1 = ['role1' => ['permissions' => ['create', 'read', 'update']]];
@@ -66,5 +74,19 @@ class RegisterTeamsPassTest extends AbstractCompilerPassTestCase
 
         $this->assertContainerBuilderHasService('team2.provider.permission', PermissionProvider::class);
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('team2.provider.permission', 0, $roleConfigurationForTeam2);
+    }
+
+    public function testOnePermissionCheckerIsRegisteredForEachTeam()
+    {
+        $this->container->compile();
+
+        $permissionProviderForTeam1 = new Reference('team1.provider.permission');
+        $permissionProviderForTeam2 = new Reference('team2.provider.permission');
+
+        $this->assertContainerBuilderHasService('team1.checker.permission', PermissionChecker::class);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('team1.checker.permission', 0, $permissionProviderForTeam1);
+
+        $this->assertContainerBuilderHasService('team2.checker.permission', PermissionChecker::class);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('team2.checker.permission', 0, $permissionProviderForTeam2);
     }
 }

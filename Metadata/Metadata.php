@@ -85,4 +85,9 @@ class Metadata implements MetadataInterface
     {
         return sprintf('%s.%s', $this->getAlias(), $serviceName);
     }
+
+    public function getPermissions()
+    {
+        return $this->parameters['permissions'];
+    }
 }
