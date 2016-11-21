@@ -71,6 +71,10 @@ class Configuration implements ConfigurationInterface
         $node = new ArrayNodeDefinition('member');
 
         $node
+            ->beforeNormalization()
+                ->ifString()
+                ->then(function ($v) { return array('model' => $v); })
+            ->end()
             ->children()
                 ->scalarNode('model')
                     ->isRequired()
@@ -87,6 +91,10 @@ class Configuration implements ConfigurationInterface
         $node = new ArrayNodeDefinition('invite');
 
         $node
+            ->beforeNormalization()
+                ->ifString()
+                ->then(function ($v) { return array('model' => $v); })
+            ->end()
             ->children()
                 ->scalarNode('model')
                     ->isRequired()
