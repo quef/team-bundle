@@ -2,7 +2,7 @@
 
 namespace Quef\TeamBundle\Security\Permission;
 
-class PermissionChecker implements PermissionCheckerInterface
+class RolePermissionChecker implements RolePermissionCheckerInterface
 {
     private $permissionProvider;
 

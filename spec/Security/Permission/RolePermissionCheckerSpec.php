@@ -2,18 +2,18 @@
 
 namespace spec\Quef\TeamBundle\Security\Permission;
 
-use Quef\TeamBundle\Security\Permission\PermissionChecker;
+use Quef\TeamBundle\Security\Permission\RolePermissionChecker;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Quef\TeamBundle\Security\Permission\PermissionCheckerInterface;
+use Quef\TeamBundle\Security\Permission\RolePermissionCheckerInterface;
 use Quef\TeamBundle\Security\Permission\PermissionProviderInterface;
 
-class PermissionCheckerSpec extends ObjectBehavior
+class RolePermissionCheckerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(PermissionChecker::class);
-        $this->shouldImplement(PermissionCheckerInterface::class);
+        $this->shouldHaveType(RolePermissionChecker::class);
+        $this->shouldImplement(RolePermissionCheckerInterface::class);
     }
 
     function let(

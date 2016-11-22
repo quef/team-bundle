@@ -9,6 +9,7 @@
 namespace Quef\TeamBundle\Security\Permission;
 
 
-interface PermissionCheckerInterface
+interface RolePermissionCheckerInterface
 {
+    public function isAuthorized($role, $permission);
 }
