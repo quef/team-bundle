@@ -13,8 +13,9 @@ use Quef\TeamBundle\Factory\InviteFactory;
 use Quef\TeamBundle\Factory\TeamMemberFactory;
 use Quef\TeamBundle\Metadata\Metadata;
 use Quef\TeamBundle\Metadata\MetadataInterface;
-use Quef\TeamBundle\Security\Permission\PermissionChecker;
 use Quef\TeamBundle\Security\Permission\PermissionProvider;
+use Quef\TeamBundle\Security\Permission\RolePermissionChecker;
+use Quef\TeamBundle\Security\Permission\TeamMemberPermissionChecker;
 use Quef\TeamBundle\Security\Role\RoleChecker;
 use Quef\TeamBundle\Security\Role\RoleHierarchy;
 use Quef\TeamBundle\Security\Role\RoleProvider;
@@ -46,7 +47,8 @@ class RegisterTeamsPass implements CompilerPassInterface
             $this->addTeamMemberFactory($container, $metadata);
             $this->addInviteFactory($container, $metadata);
             $this->addPermissionProvider($container, $metadata);
-            $this->addPermissionChecker($container, $metadata);
+            $this->addRolePermissionChecker($container, $metadata);
+            $this->addTeamMemberPermissionChecker($container, $metadata);
         }
     }
 
@@ -106,11 +108,19 @@ class RegisterTeamsPass implements CompilerPassInterface
         $container->setDefinition($metadata->getServiceId('provider.permission'), $definition);
     }
 
-    private function addPermissionChecker(ContainerBuilder $container, MetadataInterface $metadata)
+    private function addRolePermissionChecker(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        $definition = new Definition(PermissionChecker::class, [
+        $definition = new Definition(RolePermissionChecker::class, [
             new Reference($metadata->getServiceId('provider.permission'))
         ] );
-        $container->setDefinition($metadata->getServiceId('checker.permission'), $definition);
+        $container->setDefinition($metadata->getServiceId('checker.role_permission'), $definition);
+    }
+
+    private function addTeamMemberPermissionChecker(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $definition = new Definition(TeamMemberPermissionChecker::class, [
+            new Reference($metadata->getServiceId('checker.role_permission'))
+        ] );
+        $container->setDefinition($metadata->getServiceId('checker.team_member_permission'), $definition);
     }
 }

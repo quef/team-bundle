@@ -12,8 +12,9 @@ namespace Quef\TeamBundle\Tests\DependencyInjection\Compiler;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Quef\TeamBundle\DependencyInjection\Compiler\RegisterTeamsPass;
 use Quef\TeamBundle\DependencyInjection\QuefTeamExtension;
-use Quef\TeamBundle\Security\Permission\PermissionChecker;
 use Quef\TeamBundle\Security\Permission\PermissionProvider;
+use Quef\TeamBundle\Security\Permission\RolePermissionChecker;
+use Quef\TeamBundle\Security\Permission\TeamMemberPermissionChecker;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -76,17 +77,31 @@ class RegisterTeamsPassTest extends AbstractCompilerPassTestCase
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('team2.provider.permission', 0, $roleConfigurationForTeam2);
     }
 
-    public function testOnePermissionCheckerIsRegisteredForEachTeam()
+    public function testOneRolePermissionCheckerIsRegisteredForEachTeam()
     {
         $this->container->compile();
 
         $permissionProviderForTeam1 = new Reference('team1.provider.permission');
         $permissionProviderForTeam2 = new Reference('team2.provider.permission');
 
-        $this->assertContainerBuilderHasService('team1.checker.permission', PermissionChecker::class);
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('team1.checker.permission', 0, $permissionProviderForTeam1);
+        $this->assertContainerBuilderHasService('team1.checker.role_permission', RolePermissionChecker::class);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('team1.checker.role_permission', 0, $permissionProviderForTeam1);
 
-        $this->assertContainerBuilderHasService('team2.checker.permission', PermissionChecker::class);
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('team2.checker.permission', 0, $permissionProviderForTeam2);
+        $this->assertContainerBuilderHasService('team2.checker.role_permission', RolePermissionChecker::class);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('team2.checker.role_permission', 0, $permissionProviderForTeam2);
+    }
+
+    public function testOneTeamMemberPermissionCheckerIsRegisteredForEachTeam()
+    {
+        $this->container->compile();
+
+        $rolePermissionCheckerForTeam1 = new Reference('team1.checker.role_permission');
+        $rolePermissionCheckerForTeam2 = new Reference('team2.checker.role_permission');
+
+        $this->assertContainerBuilderHasService('team1.checker.team_member_permission', TeamMemberPermissionChecker::class);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('team1.checker.team_member_permission', 0, $rolePermissionCheckerForTeam1);
+
+        $this->assertContainerBuilderHasService('team2.checker.team_member_permission', TeamMemberPermissionChecker::class);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('team2.checker.team_member_permission', 0, $rolePermissionCheckerForTeam2);
     }
 }
