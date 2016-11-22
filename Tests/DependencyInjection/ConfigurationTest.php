@@ -213,4 +213,130 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             "teams.*.roles"
         );
     }
+
+    public function testPermissionsCanBeDefinedForRole()
+    {
+        $this->assertConfigurationIsValid(
+            [
+                [
+                    'teams' => [
+                        'team1' => [
+                            'roles' => [
+                                'role1' => [
+                                    'permissions' => [
+                                        'permission1',
+                                        'permission2'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'teams.*.roles.*.permissions'
+        );
+    }
+
+    public function testRoleNameIsUsedAsKeyInRolesNode()
+    {
+        $this->assertProcessedConfigurationEquals(
+            [
+                [
+                    'teams' => [
+                        'team1' => [
+                            'roles' => [
+                                ['name' => 'role1']
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'teams' => [
+                    'team1' => [
+                        'roles' => [
+                            'role1' => [
+                                'permissions' => []
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'teams.*.roles.*'
+        );
+    }
+
+    public function testRoleCanBeDefinedWithoutPermissions()
+    {
+        $this->assertProcessedConfigurationEquals(
+            [
+                [
+                    'teams' => [
+                        'team1' => [
+                            'roles' => [
+                                'role1',
+                                'role2' => [
+                                    'permissions' => [
+                                        'permission1'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'teams' => [
+                    'team1' => [
+                        'roles' => [
+                            'role1' => [
+                                'permissions' => []
+                            ],
+                            'role2' => [
+                                'permissions' => [
+                                    'permission1'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'teams.*.roles'
+        );
+    }
+
+    public function testScalarPermissionsCanBeDefined()
+    {
+        $this->assertConfigurationIsValid(
+            [
+                [
+                    'teams' => [
+                        'team1' => [
+                            'permissions' => [
+                                'permission1',
+                                'permission2'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'teams.*.permissions'
+        );
+    }
+
+    public function testPermissionsCanBeEmpty()
+    {
+        $this->assertConfigurationIsValid(
+            [
+                [
+                    'teams' => [
+                        'team1' => [
+                            'permissions' => []
+                        ]
+                    ]
+                ]
+            ],
+            'teams.*.permissions'
+        );
+    }
 }

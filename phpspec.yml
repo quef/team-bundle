@@ -1,0 +1,6 @@
+suites:
+    default:
+        namespace: Quef\TeamBundle
+        psr4_prefix: Quef\TeamBundle
+        src_path: %paths.config%
+        spec_path: %paths.config%

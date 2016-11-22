@@ -35,6 +35,7 @@ class Configuration implements ConfigurationInterface
                             ->isRequired()
                             ->cannotBeEmpty()
                         ->end()
+                        ->append($this->addPermissionsNode())
                     ->end()
                 ->end()
             ->end()
@@ -112,7 +113,38 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->requiresAtLeastOneElement()
-            ->prototype('scalar')
+            ->useAttributeAsKey('name')
+            /* This pre-normalization routine enables us to mix roles
+             * with and without permissions. For instance :
+             *
+             * roles:
+             *    - role1
+             *    - role2 :
+             *          permissions:
+             *              - permission1
+             *
+             * will be accepted
+             */
+            ->beforeNormalization()
+                ->always()
+                ->then(function ($tab) {
+                    $roles = [];
+
+                    foreach ($tab as $k => $v) {
+                        if (is_string($v)) {
+                            $roles[$v] = [];
+                        } else if (is_array($v)) {
+                            $roles[$k] = $v;
+                        }
+                    }
+                    return $roles;
+                })
+            ->end()
+            ->prototype('array')
+                ->children()
+                    ->append($this->addPermissionsNode())
+                ->end()
+            ->end()
         ->end();
 
         return $node;
@@ -127,6 +159,17 @@ class Configuration implements ConfigurationInterface
             ->prototype('array')
                 ->prototype('scalar')->end()
             ->end()
+        ->end();
+
+        return $node;
+    }
+
+    public function addPermissionsNode()
+    {
+        $node = new ArrayNodeDefinition('permissions');
+
+        $node
+            ->prototype('scalar')->end()
         ->end();
 
         return $node;

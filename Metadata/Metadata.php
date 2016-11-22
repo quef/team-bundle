@@ -60,6 +60,11 @@ class Metadata implements MetadataInterface
 
     public function getRoles()
     {
+        return array_keys($this->parameters['roles']);
+    }
+
+    public function getRolesConfiguration()
+    {
         return $this->parameters['roles'];
     }
 
@@ -79,5 +84,10 @@ class Metadata implements MetadataInterface
     public function getServiceId($serviceName)
     {
         return sprintf('%s.%s', $this->getAlias(), $serviceName);
+    }
+
+    public function getPermissions()
+    {
+        return $this->parameters['permissions'];
     }
 }
