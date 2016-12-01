@@ -9,9 +9,7 @@
 namespace Quef\TeamBundle\Model;
 
 
-use Sylius\Component\Resource\Model\ResourceInterface;
-
-abstract class Invite implements InviteInterface, ResourceInterface
+abstract class Invite implements InviteInterface
 {
     /**
      * @var integer
