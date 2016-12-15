@@ -9,6 +9,7 @@
 namespace Quef\TeamBundle\Security\Voter;
 
 
+use Doctrine\ORM\EntityRepository;
 use Quef\TeamBundle\Model\TeamInterface;
 use Quef\TeamBundle\Model\TeamMemberInterface;
 use Quef\TeamBundle\Model\TeamResourceInterface;
@@ -21,6 +22,11 @@ abstract class TeamResourceVoter implements VoterInterface
      * @return TeamMemberInterface
      */
     public abstract function getMember();
+
+    /**
+     * @return TeamResourceInterface
+     */
+    public abstract function findResource($object);
 
     public function vote(TokenInterface $token, $object, array $attributes)
     {
@@ -35,6 +41,13 @@ abstract class TeamResourceVoter implements VoterInterface
             // as soon as at least one attribute is supported, default is to deny access
             $vote = self::ACCESS_DENIED;
 
+            if(!$object instanceof TeamResourceInterface) {
+                $object = $this->findResource($object);
+            }
+            if(null === $object) {
+                throw new \InvalidArgumentException("Invalid team resource");
+            }
+
             if(!$this->isTeamMember($object)) {
                 return self::ACCESS_DENIED;
             }
@@ -48,17 +61,13 @@ abstract class TeamResourceVoter implements VoterInterface
         return $vote;
     }
 
-    protected function isTeamMember($subject)
+    /**
+     * @param TeamResourceInterface $subject
+     * @return bool
+     */
+    protected function isTeamMember(TeamResourceInterface $subject)
     {
-        if($subject instanceof TeamInterface) {
-            $team = $subject;
-        } elseif($subject instanceof TeamResourceInterface) {
-            $team = $subject->getTeam();
-        } else {
-            throw new \InvalidArgumentException("Invalid team resource");
-        }
-
-        return $this->getMember()->getTeam()->getId() === $team->getId();
+        return $this->getMember()->getTeam()->getId() === $subject->getTeam()->getId();
     }
 
     /**
