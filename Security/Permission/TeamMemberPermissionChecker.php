@@ -14,7 +14,7 @@ class TeamMemberPermissionChecker implements TeamMemberPermissionCheckerInterfac
         $this->rolePermissionChecker = $rolePermissionChecker;
     }
 
-    public function isAuthorized(TeamMemberInterface $teamMember, $permission)
+    public function hasPermission($permission, TeamMemberInterface $teamMember)
     {
         $role = $teamMember->getTeamRole();
 

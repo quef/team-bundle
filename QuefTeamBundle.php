@@ -4,6 +4,7 @@ namespace Quef\TeamBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Quef\TeamBundle\DependencyInjection\Compiler\RegisterTeamsPass;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\Compiler\AddSecurityVotersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -16,6 +17,7 @@ class QuefTeamBundle extends Bundle
     {
         $this->addRegisterMappingsPass($container);
         $container->addCompilerPass(new RegisterTeamsPass());
+//        $container->addCompilerPass(new AddSecurityVotersPass());
     }
     /**
      * @param ContainerBuilder $container

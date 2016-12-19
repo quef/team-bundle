@@ -19,6 +19,8 @@ use Quef\TeamBundle\Security\Permission\TeamMemberPermissionChecker;
 use Quef\TeamBundle\Security\Role\RoleChecker;
 use Quef\TeamBundle\Security\Role\RoleHierarchy;
 use Quef\TeamBundle\Security\Role\RoleProvider;
+use Quef\TeamBundle\Security\Voter\TeamPermissionVoter;
+use Quef\TeamBundle\Security\Voter\TeamRoleVoter;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -43,12 +45,14 @@ class RegisterTeamsPass implements CompilerPassInterface
             $registry->addMethodCall('add', [$this->getMetadataDefinition($metadata)]);
             $this->addRoleProvider($container, $metadata);
             $this->addRoleChecker($container, $metadata);
+            $this->addRoleVoter($container, $metadata);
             $this->addTeamProvider($container, $metadata);
             $this->addTeamMemberFactory($container, $metadata);
             $this->addInviteFactory($container, $metadata);
             $this->addPermissionProvider($container, $metadata);
             $this->addRolePermissionChecker($container, $metadata);
             $this->addTeamMemberPermissionChecker($container, $metadata);
+            $this->addPermissionVoter($container, $metadata);
         }
     }
 
@@ -72,6 +76,19 @@ class RegisterTeamsPass implements CompilerPassInterface
         $definition = new Definition(RoleProvider::class);
         $definition->setArguments([$metadata->getRoles(), $metadata->getAdminRole()]);
         $container->setDefinition($metadata->getServiceId('provider.role'), $definition);
+    }
+
+    private function addRoleVoter(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $definition = new Definition(TeamRoleVoter::class);
+        $definition->setArguments(array(
+            new Reference($metadata->getServiceId('provider.role')),
+            new Reference($metadata->getServiceId('checker.role')),
+            new Reference($metadata->getMemberProvider()),
+        ));
+        $definition->addTag('security.voter');
+        $definition->setPublic(false);
+        $container->setDefinition($metadata->getServiceId('voter.role'), $definition);
     }
 
     private function addRoleChecker(ContainerBuilder $container, MetadataInterface $metadata)
@@ -104,7 +121,11 @@ class RegisterTeamsPass implements CompilerPassInterface
 
     private function addPermissionProvider(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        $definition = new Definition(PermissionProvider::class, [$metadata->getRolesConfiguration()]);
+        $definition = new Definition(PermissionProvider::class, [
+            $metadata->getPermissions(),
+            $metadata->getRolesConfiguration(),
+            $metadata->getAdminRole()
+        ]);
         $container->setDefinition($metadata->getServiceId('provider.permission'), $definition);
     }
 
@@ -122,5 +143,18 @@ class RegisterTeamsPass implements CompilerPassInterface
             new Reference($metadata->getServiceId('checker.role_permission'))
         ] );
         $container->setDefinition($metadata->getServiceId('checker.team_member_permission'), $definition);
+    }
+
+    private function addPermissionVoter(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $definition = new Definition(TeamPermissionVoter::class);
+        $definition->setArguments(array(
+            new Reference($metadata->getServiceId('provider.permission')),
+            new Reference($metadata->getServiceId('checker.team_member_permission')),
+            new Reference($metadata->getMemberProvider()),
+        ));
+        $definition->addTag('security.voter');
+        $definition->setPublic(false);
+        $container->setDefinition($metadata->getServiceId('voter.permission'), $definition);
     }
 }

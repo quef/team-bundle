@@ -13,7 +13,7 @@ use Quef\TeamBundle\Model\TeamInterface;
 use Quef\TeamBundle\Model\TeamMemberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class TeamProvider implements TeamProviderInterface
+class TeamProvider implements TeamProviderInterface, TeamMemberProviderInterface
 {
     /** @var TokenStorageInterface */
     private $tokenStorage;

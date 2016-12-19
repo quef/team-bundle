@@ -29,7 +29,7 @@ class RoleProvider implements RoleProviderInterface
 
     public function getRolesWithAdmin()
     {
-        return array_merge($this->getRoles(), $this->admin);
+        return array_merge($this->getRoles(), [$this->admin]);
     }
 
     /** @return string */

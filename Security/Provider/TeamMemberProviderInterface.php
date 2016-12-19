@@ -13,10 +13,11 @@ namespace Quef\TeamBundle\Security\Provider;
 use Quef\TeamBundle\Model\TeamInterface;
 use Quef\TeamBundle\Model\TeamMemberInterface;
 
-interface TeamProviderInterface
+interface TeamMemberProviderInterface
 {
     /**
-     * @return TeamInterface
+     * @return TeamMemberInterface
      */
-    public function getCurrentTeam();
+    public function getCurrentMember();
+
 }

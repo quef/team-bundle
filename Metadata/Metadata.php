@@ -48,6 +48,11 @@ class Metadata implements MetadataInterface
         return $this->parameters['member']['model'];
     }
 
+    public function getMemberProvider()
+    {
+        return $this->parameters['member']['provider'];
+    }
+
     public function getTeam()
     {
         return $this->parameters['team']['model'];

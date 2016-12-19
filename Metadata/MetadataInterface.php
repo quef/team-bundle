@@ -39,6 +39,11 @@ interface MetadataInterface
     /**
      * @return string
      */
+    public function getMemberProvider();
+
+    /**
+     * @return string
+     */
     public function getInvite();
 
     /**
@@ -64,4 +69,6 @@ interface MetadataInterface
     public function getServiceId($serviceName);
 
     public function getRolesConfiguration();
+
+    public function getPermissions();
 }
