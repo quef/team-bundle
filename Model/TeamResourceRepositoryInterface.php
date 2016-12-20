@@ -12,4 +12,6 @@ namespace Quef\TeamBundle\Model;
 interface TeamResourceRepositoryInterface
 {
     public function findByTeam(TeamInterface $team);
+
+    public function find($id);
 }

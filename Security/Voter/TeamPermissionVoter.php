@@ -64,7 +64,6 @@ class TeamPermissionVoter implements VoterInterface
 
             $member = $this->memberProvider->getCurrentMember();
             if ($member !== null && true === $this->permissionChecker->hasPermission($attribute, $member)) {
-                dump('You permission!');
                 return VoterInterface::ACCESS_GRANTED;
             }
         }

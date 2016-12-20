@@ -53,6 +53,7 @@ class RegisterTeamsPass implements CompilerPassInterface
             $this->addRolePermissionChecker($container, $metadata);
             $this->addTeamMemberPermissionChecker($container, $metadata);
             $this->addPermissionVoter($container, $metadata);
+            $this->addTeamResourceVoter($container, $metadata);
         }
     }
 
@@ -156,5 +157,15 @@ class RegisterTeamsPass implements CompilerPassInterface
         $definition->addTag('security.voter');
         $definition->setPublic(false);
         $container->setDefinition($metadata->getServiceId('voter.permission'), $definition);
+    }
+
+    private function addTeamResourceVoter(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $definition = new Definition(TeamPermissionVoter::class);
+        $definition->addMethodCall('setRoleChecker', [new Reference($metadata->getServiceId('checker.role'))]);
+        $definition->addMethodCall('setPermissionChecker', [new Reference($metadata->getServiceId('checker.team_member_permission'))]);
+        $definition->addMethodCall('setMemberProvider', [new Reference($metadata->getMemberProvider())]);
+        $definition->setAbstract(true);
+        $container->setDefinition($metadata->getServiceId('voter.team_resource'), $definition);
     }
 }

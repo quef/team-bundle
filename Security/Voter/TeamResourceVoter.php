@@ -9,24 +9,88 @@
 namespace Quef\TeamBundle\Security\Voter;
 
 
-use Doctrine\ORM\EntityRepository;
-use Quef\TeamBundle\Model\TeamInterface;
-use Quef\TeamBundle\Model\TeamMemberInterface;
 use Quef\TeamBundle\Model\TeamResourceInterface;
+use Quef\TeamBundle\Model\TeamResourceRepositoryInterface;
+use Quef\TeamBundle\Security\Permission\TeamMemberPermissionCheckerInterface;
+use Quef\TeamBundle\Security\Provider\TeamMemberProviderInterface;
+use Quef\TeamBundle\Security\Role\RoleCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 abstract class TeamResourceVoter implements VoterInterface
 {
-    /**
-     * @return TeamMemberInterface
-     */
-    public abstract function getMember();
+    /** @var RoleCheckerInterface */
+    private $roleChecker;
+
+    /** @var TeamMemberPermissionCheckerInterface */
+    private $permissionChecker;
+
+    /** @var TeamMemberProviderInterface */
+    private $memberProvider;
 
     /**
-     * @return TeamResourceInterface
+     * @return RoleCheckerInterface
      */
-    public abstract function findResource($object);
+    public function getRoleChecker()
+    {
+        return $this->roleChecker;
+    }
+
+    /**
+     * @param RoleCheckerInterface $roleChecker
+     */
+    public function setRoleChecker($roleChecker)
+    {
+        $this->roleChecker = $roleChecker;
+    }
+
+    /**
+     * @return TeamMemberPermissionCheckerInterface
+     */
+    public function getPermissionChecker()
+    {
+        return $this->permissionChecker;
+    }
+
+    /**
+     * @param TeamMemberPermissionCheckerInterface $permissionChecker
+     */
+    public function setPermissionChecker($permissionChecker)
+    {
+        $this->permissionChecker = $permissionChecker;
+    }
+
+    /**
+     * @return TeamMemberProviderInterface
+     */
+    public function getMemberProvider()
+    {
+        return $this->memberProvider;
+    }
+
+    /**
+     * @param TeamMemberProviderInterface $memberProvider
+     */
+    public function setMemberProvider($memberProvider)
+    {
+        $this->memberProvider = $memberProvider;
+    }
+
+    /** @return TeamResourceRepositoryInterface */
+    public abstract function getResourceRepository();
+
+
+    /**
+     * Used to find the resource when only the id is available during the vote.
+     *
+     *  This can be override if another attribute than the id is used. i.e slug
+     */
+    public function findResource($id)
+    {
+        return $this->getResourceRepository()->find($id);
+    }
+
+
 
     public function vote(TokenInterface $token, $object, array $attributes)
     {
@@ -44,6 +108,7 @@ abstract class TeamResourceVoter implements VoterInterface
             if(!$object instanceof TeamResourceInterface) {
                 $object = $this->findResource($object);
             }
+
             if(null === $object) {
                 throw new \InvalidArgumentException("Invalid team resource");
             }
@@ -52,7 +117,7 @@ abstract class TeamResourceVoter implements VoterInterface
                 return self::ACCESS_DENIED;
             }
 
-            if ($this->voteOnAttribute($attribute, $object, $token)) {
+            if ($this->voteOnResource($attribute, $object, $token)) {
                 // grant access as soon as at least one attribute returns a positive response
                 return self::ACCESS_GRANTED;
             }
@@ -62,12 +127,30 @@ abstract class TeamResourceVoter implements VoterInterface
     }
 
     /**
+     * @param $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return $this->getRoleChecker()->hasRole($role, $this->getMemberProvider()->getCurrentMember());
+    }
+
+    /**
+     * @param $permission
+     * @return bool
+     */
+    public function hasPermission($permission)
+    {
+        return $this->getPermissionChecker()->hasPermission($permission, $this->getMemberProvider()->getCurrentMember());
+    }
+
+    /**
      * @param TeamResourceInterface $subject
      * @return bool
      */
     protected function isTeamMember(TeamResourceInterface $subject)
     {
-        return $this->getMember()->getTeam()->getId() === $subject->getTeam()->getId();
+        return $this->getMemberProvider()->getCurrentMember()->getTeam()->getId() === $subject->getTeam()->getId();
     }
 
     /**
@@ -103,11 +186,11 @@ abstract class TeamResourceVoter implements VoterInterface
      * It is safe to assume that $attribute and $subject already passed the "supports()" method check.
      *
      * @param string         $attribute
-     * @param mixed          $subject
+     * @param TeamResourceInterface $resource
      * @param TokenInterface $token
      *
      * @return bool
      */
-    abstract protected function voteOnAttribute($attribute, $subject, TokenInterface $token);
+    abstract protected function voteOnResource($attribute, TeamResourceInterface $resource, TokenInterface $token);
 
 }
