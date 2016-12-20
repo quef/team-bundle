@@ -76,20 +76,6 @@ abstract class TeamResourceVoter implements VoterInterface
         $this->memberProvider = $memberProvider;
     }
 
-    /** @return TeamResourceRepositoryInterface */
-    public abstract function getResourceRepository();
-
-
-    /**
-     * Used to find the resource when only the id is available during the vote.
-     *
-     *  This can be override if another attribute than the id is used. i.e slug
-     */
-    public function findResource($id)
-    {
-        return $this->getResourceRepository()->find($id);
-    }
-
 
 
     public function vote(TokenInterface $token, $object, array $attributes)
@@ -106,11 +92,7 @@ abstract class TeamResourceVoter implements VoterInterface
             $vote = self::ACCESS_DENIED;
 
             if(!$object instanceof TeamResourceInterface) {
-                $object = $this->findResource($object);
-            }
-
-            if(null === $object) {
-                throw new \InvalidArgumentException("Invalid team resource");
+                throw new \InvalidArgumentException("Argument is not a valid TeamResourceInterface.");
             }
 
             if(!$this->isTeamMember($object)) {
