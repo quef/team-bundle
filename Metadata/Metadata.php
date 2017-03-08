@@ -78,9 +78,9 @@ class Metadata implements MetadataInterface
         return $this->parameters['role_hierarchy'];
     }
 
-    public function getAdminRole()
+    public function getOwnerRole()
     {
-        return $this->parameters['admin_role'];
+        return $this->parameters['owner_role'];
     }
 
     /**

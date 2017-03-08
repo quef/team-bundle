@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addInviteNode())
                         ->append($this->addRolesNode())
                         ->append($this->addRoleHierarchyNode())
-                        ->scalarNode('admin_role')
+                        ->scalarNode('owner_role')
                             ->isRequired()
                             ->cannotBeEmpty()
                         ->end()

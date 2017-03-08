@@ -16,17 +16,17 @@ class RoleChecker implements RoleCheckerInterface
     /** @var RoleHierarchyInterface */
     private $hierarchy;
     /** @var RoleInterface */
-    private $adminRole;
+    private $ownerRole;
 
-    public function __construct(RoleHierarchyInterface $hierarchy, $adminRole)
+    public function __construct(RoleHierarchyInterface $hierarchy, $ownerRole)
     {
         $this->hierarchy = $hierarchy;
-        $this->adminRole = new Role($adminRole);
+        $this->ownerRole = new Role($ownerRole);
     }
 
     public function hasRole($role, TeamMemberInterface $member)
     {
-        if($this->isAdmin($member)) {
+        if($this->isOwner($member)) {
             return true;
         }
 
@@ -50,8 +50,8 @@ class RoleChecker implements RoleCheckerInterface
         return $roles;
     }
 
-    private function isAdmin(TeamMemberInterface $member)
+    private function isOwner(TeamMemberInterface $member)
     {
-        return $this->adminRole->getRole() === $member->getTeamRole();
+        return $this->ownerRole->getRole() === $member->getTeamRole();
     }
 }

@@ -41,7 +41,7 @@ class RegisterTeamsPassTest extends AbstractCompilerPassTestCase
                                 'permissions' => ['create', 'read', 'update']
                             ]
                         ],
-                        'admin_role' => 'admin_role'
+                        'owner_role' => 'owner_role'
                     ],
                     'team2' => [
                         'team' => 'Quef\Bundle\TeamTest',
@@ -52,7 +52,7 @@ class RegisterTeamsPassTest extends AbstractCompilerPassTestCase
                                 'permissions' => ['read', 'update']
                             ]
                         ],
-                        'admin_role' => 'admin_role'
+                        'owner_role' => 'owner_role'
                     ],
                 ]
             ]

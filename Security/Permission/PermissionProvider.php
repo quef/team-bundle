@@ -8,13 +8,13 @@ class PermissionProvider implements PermissionProviderInterface
 {
     private $permissions;
     private $rolesConfiguration;
-    private $adminRole;
+    private $ownerRole;
 
-    public function __construct($permissions, $rolesConfiguration, $adminRole)
+    public function __construct($permissions, $rolesConfiguration, $ownerRole)
     {
         $this->permissions = $permissions;
         $this->rolesConfiguration = $rolesConfiguration;
-        $this->adminRole = $adminRole;
+        $this->ownerRole = $ownerRole;
     }
 
     public function getPermissionsForRole($role)
@@ -23,7 +23,7 @@ class PermissionProvider implements PermissionProviderInterface
             throw new \InvalidArgumentException('The role should be a string parameter');
         }
 
-        if($this->adminRole === $role) {
+        if($this->ownerRole === $role) {
             return $this->permissions;
         }
 

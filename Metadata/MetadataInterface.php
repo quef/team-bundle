@@ -59,7 +59,7 @@ interface MetadataInterface
     /**
      * @return string
      */
-    public function getAdminRole();
+    public function getOwnerRole();
 
     /**
      * @param string $serviceName

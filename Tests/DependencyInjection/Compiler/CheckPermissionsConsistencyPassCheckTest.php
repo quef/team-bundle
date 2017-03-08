@@ -40,7 +40,7 @@ class CheckPermissionsConsistencyPassCheckTest extends AbstractCompilerPassTestC
                                 ]
                             ]
                         ],
-                        'admin_role' => 'role1',
+                        'owner_role' => 'role1',
                         'permissions' => [
                             'create'
                         ]

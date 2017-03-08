@@ -75,7 +75,7 @@ class RegisterTeamsPass implements CompilerPassInterface
     private function addRoleProvider(ContainerBuilder $container, MetadataInterface $metadata)
     {
         $definition = new Definition(RoleProvider::class);
-        $definition->setArguments([$metadata->getRoles(), $metadata->getAdminRole()]);
+        $definition->setArguments([$metadata->getRoles(), $metadata->getOwnerRole()]);
         $container->setDefinition($metadata->getServiceId('provider.role'), $definition);
     }
 
@@ -97,7 +97,7 @@ class RegisterTeamsPass implements CompilerPassInterface
         $definition = new Definition(RoleChecker::class);
         $definition->setArguments([
             $this->getRoleHierarchyDefinition($metadata),
-            $metadata->getAdminRole()]);
+            $metadata->getOwnerRole()]);
         $container->setDefinition($metadata->getServiceId('checker.role'), $definition);
     }
 
@@ -125,7 +125,7 @@ class RegisterTeamsPass implements CompilerPassInterface
         $definition = new Definition(PermissionProvider::class, [
             $metadata->getPermissions(),
             $metadata->getRolesConfiguration(),
-            $metadata->getAdminRole()
+            $metadata->getOwnerRole()
         ]);
         $container->setDefinition($metadata->getServiceId('provider.permission'), $definition);
     }

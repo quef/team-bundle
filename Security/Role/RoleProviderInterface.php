@@ -15,8 +15,8 @@ interface RoleProviderInterface
     public function getRoles();
 
     /** @return string */
-    public function getAdminRole();
+    public function getOwnerRole();
 
     /** @return array */
-    public function getRolesWithAdmin();
+    public function getRolesWithOwner();
 }

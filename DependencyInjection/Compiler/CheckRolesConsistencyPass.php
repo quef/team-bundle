@@ -27,20 +27,20 @@ class CheckRolesConsistencyPass implements CompilerPassInterface
         foreach ($teamsConfiguration as $alias => $teamConfiguration) {
             $metadata  = new Metadata($alias, $teamConfiguration);
 
-            $this->ensureAdminRoleExistsInRoleList($metadata);
+            $this->ensureOwnerRoleExistsInRoleList($metadata);
             $this->ensureRolesUsedInRoleHierarchyExisInRoleList($metadata);
         }
     }
 
-    private function ensureAdminRoleExistsInRoleList(MetadataInterface $metadata)
+    private function ensureOwnerRoleExistsInRoleList(MetadataInterface $metadata)
     {
         $alias = $metadata->getAlias();
         $roles = $metadata->getRoles();
-        $adminRole = $metadata->getAdminRole();
+        $ownerRole = $metadata->getOwnerRole();
 
-        if (!in_array($adminRole, $roles)) {
+        if (!in_array($ownerRole, $roles)) {
             throw new \InvalidArgumentException(
-                sprintf('The admin role %s is not defined in the roles list of team %s', $adminRole, $alias));
+                sprintf('The owner role %s is not defined in the roles list of team %s', $ownerRole, $alias));
         }
     }
 

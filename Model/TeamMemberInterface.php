@@ -9,6 +9,8 @@
 namespace Quef\TeamBundle\Model;
 
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
 interface TeamMemberInterface extends TeamResourceInterface
 {
     /** @return string */
@@ -19,5 +21,13 @@ interface TeamMemberInterface extends TeamResourceInterface
 
     /** @param TeamInterface $team */
     public function setTeam(TeamInterface $team);
+
+    /** @return UserInterface */
+    public function getUser();
+
+    /**
+     * @param UserInterface $user
+     */
+    public function setUser(UserInterface $user);
 
 }

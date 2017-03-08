@@ -36,7 +36,7 @@ class TeamRoleVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, $this->roleProvider->getRolesWithAdmin());
+        return in_array($attribute, $this->roleProvider->getRolesWithOwner());
     }
 
     /**

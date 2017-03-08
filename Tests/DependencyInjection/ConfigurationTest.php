@@ -16,23 +16,23 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
 
 
-    public function testAdminRoleCannotBeEmpty()
+    public function testOwnerRoleCannotBeEmpty()
     {
         $this->assertPartialConfigurationIsInvalid(
             [
                 [
                     'teams' => [
                         'array' => [
-                            'admin_role' => ''
+                            'owner_role' => ''
                         ]
                     ]
                 ]
             ],
-            "teams.*.admin_role"
+            "teams.*.owner_role"
         );
     }
 
-    public function testAdminRoleIsRequired()
+    public function testOwnerRoleIsRequired()
     {
         $this->assertPartialConfigurationIsInvalid(
             [
@@ -42,7 +42,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     ]
                 ]
             ],
-            "teams.*.admin_role"
+            "teams.*.owner_role"
         );
     }
 

@@ -17,7 +17,7 @@ class CheckRolesConsistencyPassCheckTest extends AbstractCompilerPassTestCase
         $this->container->addCompilerPass(new CheckRolesConsistencyPass($container));
     }
 
-    public function testAdminRoleNotDefinedInRoleListThrowException()
+    public function testOwnerRoleNotDefinedInRoleListThrowException()
     {
         $configs = [
             [
@@ -27,7 +27,7 @@ class CheckRolesConsistencyPassCheckTest extends AbstractCompilerPassTestCase
                         'member' => 'Quef\Bundle\MemberTest',
                         'invite' => 'Quef\Bundle\InviteTest',
                         'roles' => ['role1', 'role2'],
-                        'admin_role' => 'admin_role'
+                        'owner_role' => 'owner_role'
                     ]
                 ]
             ]
@@ -51,7 +51,7 @@ class CheckRolesConsistencyPassCheckTest extends AbstractCompilerPassTestCase
                         'member' => 'Quef\Bundle\MemberTest',
                         'invite' => 'Quef\Bundle\InviteTest',
                         'roles' => ['role1', 'role2'],
-                        'admin_role' => 'role1',
+                        'owner_role' => 'role1',
                         'role_hierarchy' => [
                             'role1' => ['role2'],
                             'role2' => ['role3']
