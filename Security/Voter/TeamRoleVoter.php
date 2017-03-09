@@ -63,7 +63,6 @@ class TeamRoleVoter implements VoterInterface
 
             $member = $this->memberProvider->getCurrentMember();
             if ($member !== null && true === $this->roleChecker->hasRole($attribute, $member)) {
-                dump('You ok!');
                 return VoterInterface::ACCESS_GRANTED;
             }
         }

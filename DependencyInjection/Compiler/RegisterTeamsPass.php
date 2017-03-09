@@ -125,7 +125,8 @@ class RegisterTeamsPass implements CompilerPassInterface
         $definition = new Definition(PermissionProvider::class, [
             $metadata->getPermissions(),
             $metadata->getRolesConfiguration(),
-            $metadata->getOwnerRole()
+            $metadata->getOwnerRole(),
+            $this->getRoleHierarchyDefinition($metadata)
         ]);
         $container->setDefinition($metadata->getServiceId('provider.permission'), $definition);
     }
