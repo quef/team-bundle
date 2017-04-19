@@ -132,7 +132,11 @@ abstract class TeamResourceVoter implements VoterInterface
      */
     protected function isTeamMember(TeamResourceInterface $subject)
     {
-        return $this->getMemberProvider()->getCurrentMember()->getTeam()->getId() === $subject->getTeam()->getId();
+        $member = $this->getMemberProvider()->getCurrentMember();
+        if(null !== $member) {
+            return $member->getTeam()->getId() === $subject->getTeam()->getId();
+        }
+        return false;
     }
 
     /**

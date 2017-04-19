@@ -56,7 +56,7 @@ class TeamPermissionVoter implements VoterInterface
         $result = VoterInterface::ACCESS_ABSTAIN;
 
         foreach ($attributes as $attribute) {
-            if (!$this->supportsAttribute($attribute)) {
+            if (!$this->supportsAttribute($attribute) || $object) {
                 continue;
             }
 
