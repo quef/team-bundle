@@ -117,6 +117,7 @@ class RegisterTeamsPass implements CompilerPassInterface
     {
         $definition = new Definition(TeamMemberFactory::class);
         $definition->addMethodCall('setClassName', [$metadata->getMember()]);
+        $definition->addMethodCall('setRoleProvider', [new Reference($metadata->getServiceId('provider.role'))]);
         $container->setDefinition($metadata->getServiceId('factory.member'), $definition);
     }
 
