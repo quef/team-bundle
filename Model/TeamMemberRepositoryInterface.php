@@ -9,6 +9,9 @@
 namespace Quef\TeamBundle\Model;
 
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
 interface TeamMemberRepositoryInterface extends TeamResourceRepositoryInterface
 {
+    public function findOneByTeamAndUser(TeamInterface $team, UserInterface $user);
 }

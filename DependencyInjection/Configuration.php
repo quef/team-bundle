@@ -59,7 +59,8 @@ class Configuration implements ConfigurationInterface
                     ->cannotBeEmpty()
                 ->end()
                 ->scalarNode('provider')
-                    ->defaultValue('quef_team.provider.team.default')
+                    ->isRequired()
+                    ->cannotBeEmpty()
                 ->end()
             ->end()
         ->end();
@@ -82,8 +83,8 @@ class Configuration implements ConfigurationInterface
                     ->cannotBeEmpty()
                 ->end()
                 ->scalarNode('provider')
-                    ->defaultValue('quef_team.provider.team.default')
-                    ->end()
+                    ->isRequired()
+                    ->cannotBeEmpty()
                 ->end()
         ->end();
 

@@ -7,7 +7,3 @@ services:
   quef_team.registry:
     class: %quef_team.registry.class%
     arguments: ["%quef.teams%"]
-
-  quef_team.provider.team.default:
-      class: %quef_team.provider.team.default.class%
-      arguments: ["@security.token_storage"]

@@ -16,8 +16,9 @@ use Quef\TeamBundle\Model\TeamMemberInterface;
 interface TeamMemberProviderInterface
 {
     /**
+     * @param TeamInterface $team
      * @return TeamMemberInterface
      */
-    public function getCurrentMember();
+    public function getCurrentMember(TeamInterface $team);
 
 }

@@ -10,7 +10,6 @@ namespace Quef\TeamBundle\Security\Voter;
 
 
 use Quef\TeamBundle\Model\TeamResourceInterface;
-use Quef\TeamBundle\Model\TeamResourceRepositoryInterface;
 use Quef\TeamBundle\Security\Permission\TeamMemberPermissionCheckerInterface;
 use Quef\TeamBundle\Security\Provider\TeamMemberProviderInterface;
 use Quef\TeamBundle\Security\Role\RoleCheckerInterface;
@@ -110,20 +109,22 @@ abstract class TeamResourceVoter implements VoterInterface
 
     /**
      * @param $role
+     * @param TeamResourceInterface $resource
      * @return bool
      */
-    public function hasRole($role)
+    public function hasRole($role, TeamResourceInterface $resource)
     {
-        return $this->getRoleChecker()->hasRole($role, $this->getMemberProvider()->getCurrentMember());
+        return $this->getRoleChecker()->hasRole($role, $this->getMemberProvider()->getCurrentMember($resource->getTeam()));
     }
 
     /**
      * @param $permission
+     * @param TeamResourceInterface $resource
      * @return bool
      */
-    public function hasPermission($permission)
+    public function hasPermission($permission, TeamResourceInterface $resource)
     {
-        return $this->getPermissionChecker()->hasPermission($permission, $this->getMemberProvider()->getCurrentMember());
+        return $this->getPermissionChecker()->hasPermission($permission, $this->getMemberProvider()->getCurrentMember($resource->getTeam()));
     }
 
     /**
@@ -132,7 +133,7 @@ abstract class TeamResourceVoter implements VoterInterface
      */
     protected function isTeamMember(TeamResourceInterface $subject)
     {
-        $member = $this->getMemberProvider()->getCurrentMember();
+        $member = $this->getMemberProvider()->getCurrentMember($subject->getTeam());
         if(null !== $member) {
             return $member->getTeam()->getId() === $subject->getTeam()->getId();
         }
