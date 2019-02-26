@@ -5,5 +5,5 @@ parameters:
 
 services:
   quef_team.registry:
-    class: %quef_team.registry.class%
+    class: '%quef_team.registry.class%'
     arguments: ["%quef.teams%"]
