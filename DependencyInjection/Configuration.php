@@ -18,8 +18,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('quef_team');
+        $treeBuilder = new TreeBuilder('quef_team');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode->children()
             ->arrayNode('teams')
